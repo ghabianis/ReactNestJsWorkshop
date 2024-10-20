@@ -1,0 +1,95 @@
+version: '3.5'
+
+services:
+  proxy:
+      image: traefik:v2.11
+      command: --providers.docker
+      ports:
+        - 80:80
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  server:
+    container_name: server
+    build: 
+      context: ./server
+      dockerfile: docker/Dockerfile 
+    environment: 
+      - DATABASE_DB=dbpfa
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_HOST=db
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+    ports: 
+      - '3000:3000' 
+    depends_on: 
+      - db 
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: nest-pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    ports:
+      - '5050:80'
+    depends_on:
+      - db
+
+  migrate-dev:
+    image: ${CI_REGISTRY_IMAGE:-web_app}/migrate:${CI_COMMIT_SHORT_SHA:-latest}
+    build:
+      context: ./server
+      dockerfile: docker/Dockerfile
+      args:
+        NPM_LOG_LEVEL: notice
+    command:
+      - /bin/sh
+      - -c
+      - npx prisma migrate dev --name migrationdata && npm run db:migrate-up
+      # - && npx prisma generate && npm run seed
+    working_dir: /app
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./server/prisma:/app/prisma
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+    depends_on:
+      - db
+
+  client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: docker/Dockerfile
+    ports:
+      - "5173:5173"
+    develop:
+      watch:
+        - path: ./client/src
+          action: sync
+          target: /usr/local/app/src
+        - path: ./client/package.json
+          action: rebuild
+    volumes:
+      - ./client:/usr/local/app
+
+volumes:
+  postgres:
