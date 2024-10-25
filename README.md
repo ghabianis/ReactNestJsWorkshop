@@ -31,7 +31,12 @@ We will develop a simple task management application where users can create, vie
 }
 ```
 
-<hr>
+### 3. Setting Up Prisma and PostgreSQL
+Install and configure Prisma ORM.
+Set up PostgreSQL in Docker and connect Prisma to the PostgreSQL database.
+Define the database schema for the tasks.
+
+<hr> Let's hack the world 🐱‍💻
 
 ## To Run the project:
 ```
