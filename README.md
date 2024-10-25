@@ -36,6 +36,20 @@ Install and configure Prisma ORM.
 Set up PostgreSQL in Docker and connect Prisma to the PostgreSQL database.
 Define the database schema for the tasks.
 
+## Example Prisma Schema:
+
+```
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  status      String
+}
+
+```
+
+
+
 <hr> Let's hack the world 🐱‍💻
 
 ## To Run the project:
