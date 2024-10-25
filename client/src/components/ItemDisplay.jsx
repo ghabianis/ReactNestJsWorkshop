@@ -11,26 +11,34 @@ import './ItemDisplay.scss';
 
 export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     const toggleCompletion = () => {
-        fetch(`/api/todo/${item.id}`, {
+        fetch(`https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo/${item.id}`, {
             method: 'PUT',
-            body: JSON.stringify({
-                name: item.title, // Change to title
-                completed: !item.completed,
-            }),
             headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: item.title,
+                description: item.description,
+                isActive: !item.isActive // Toggle isActive
+            }),
         })
-            .then((r) => r.json())
-            .then(onItemUpdate);
+            .then((response) => response.json())
+            .then((updatedItem) => {
+                console.log('Updated item from API:', updatedItem);
+                onItemUpdate(updatedItem); // Update in parent
+            })
+            .catch((error) => console.error('Error updating item:', error));
     };
 
     const removeItem = () => {
-        fetch(`/api/todo/${item.id}`, { method: 'DELETE' }).then(() =>
-            onItemRemoval(item),
-        );
+        fetch(`https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo/${item.id}`, { method: 'DELETE' })
+            .then(() => onItemRemoval(item))
+            .catch((error) => console.error('Error removing item:', error));
     };
 
     return (
-        <Container fluid className={`item ${item.completed && 'completed'}`}>
+        <Container fluid className={`item ${!item.isActive && 'completed'}`}   style={{
+            opacity: item.isActive ? 1 : 0.9,
+            filter: item.isActive ? 'none' : 'blur(2px)',
+        }}>
             <Row>
                 <Col xs={2} className="text-center">
                     <Button
@@ -38,21 +46,17 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                         size="sm"
                         variant="link"
                         onClick={toggleCompletion}
-                        aria-label={
-                            item.completed
-                                ? 'Mark item as incomplete'
-                                : 'Mark item as complete'
-                        }
+                        aria-label={item.isActive ? 'Mark item as completed' : 'Mark item as active'}
                     >
                         <FontAwesomeIcon
-                            icon={item.completed ? faCheckSquare : faSquare}
+                            icon={item.isActive ? faSquare : faCheckSquare} // Check based on `isActive`
                         />
                     </Button>
                 </Col>
                 <Col xs={8} className="name">
-                    <h5>{item.title || "No Title"}</h5>  {/* Display the title */}
-                    <p>{item.description || "No Description"}</p> {/* Display the description */}
-                    <p>Status: {item.status || "Unknown Status"}</p> {/* Display the status */}
+                    <h5>{item.title || "No Title"}</h5>
+                    <p>{item.description || "No Description"}</p>
+                    <p>Status: {item.isActive ? "Active" : "Completed"}</p>
                 </Col>
                 <Col xs={2} className="text-center remove">
                     <Button
@@ -61,10 +65,7 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                         onClick={removeItem}
                         aria-label="Remove Item"
                     >
-                        <FontAwesomeIcon
-                            icon={faTrash}
-                            className="text-danger"
-                        />
+                        <FontAwesomeIcon icon={faTrash} className="text-danger" />
                     </Button>
                 </Col>
             </Row>
@@ -75,10 +76,9 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
 ItemDisplay.propTypes = {
     item: PropTypes.shape({
         id: PropTypes.string,
-        title: PropTypes.string, // Changed from name to title
-        description: PropTypes.string, // Added description
-        status: PropTypes.string, // Added status
-        completed: PropTypes.bool,
+        title: PropTypes.string,
+        description: PropTypes.string,
+        isActive: PropTypes.bool,
     }).isRequired,
     onItemUpdate: PropTypes.func.isRequired,
     onItemRemoval: PropTypes.func.isRequired,

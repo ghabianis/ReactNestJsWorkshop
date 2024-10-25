@@ -62,7 +62,7 @@ services:
     command:
       - /bin/sh
       - -c
-      - npx prisma migrate dev --name migrationdata && npm run db:migrate-up
+      - npx prisma migrate dev --name migrationdata && npx prisma migrate deploy
       # - && npx prisma generate && npm run seed
     working_dir: /app
     tty: true

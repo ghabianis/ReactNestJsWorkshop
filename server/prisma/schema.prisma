@@ -16,6 +16,5 @@ model Todo {
   deletedAt String?
   title String
   description String
-  isDone Boolean?
-  isInPorgress Boolean?
+  isActive Boolean? @default(true)
 }

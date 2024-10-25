@@ -20,6 +20,18 @@ export class TodoController {
    }
   }
 
+  @Get('greeting')
+  async greeting() {
+      try {
+          const greeting = "Welcome to the Todo App Hackers 👋😁 let's dive into Nestjs, Prisma, React, Postgres 💣";
+          return { data: greeting, status: 'success' };
+      } catch (error) {
+          throw new Error(`Failed to get greeting: ${error.message}`);
+      }
+  }
+
+ 
+
   @Get()
   async findAll() {
     try {

@@ -15,11 +15,7 @@ export class CreateTodoDto {
     @ApiPropertyOptional({ description: 'Whether the Todo is done', example: false })
     @IsOptional()
     @IsBoolean()
-    isDone?: boolean;
+    isActive?: boolean;
   
-    @ApiPropertyOptional({ description: 'Whether the Todo is in progress', example: true })
-    @IsOptional()
-    @IsBoolean()
-    isInProgress?: boolean;
 }
 

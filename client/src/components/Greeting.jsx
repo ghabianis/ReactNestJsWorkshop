@@ -1,15 +1,42 @@
+// src/components/Greeting.jsx
 import { useEffect, useState } from 'react';
 
 export function Greeting() {
-    const [greeting, setGreeting] = useState(null);
+    const [greeting, setGreeting] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch('/api/greeting')
-            .then((res) => res.json())
-            .then((data) => setGreeting(data.greeting));
-    }, [setGreeting]);
+        fetch('https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo/greeting')
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error('Failed to fetch greeting');
+                }
+                return res.json();
+            })
+            .then((data) => {
+                setGreeting(data.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setIsLoading(false);
+            });
+    }, []);
 
-    if (!greeting) return null;
+    if (isLoading) {
+        return <div className="text-center mb-5">Loading...</div>;
+    }
 
-    return <h1 className="text-center mb-5">{greeting}</h1>;
+    if (error) {
+        return <div className="text-center mb-5 text-red-500">Error: {error}</div>;
+    }
+
+    return (
+        <div className="w-full max-w-4xl mx-auto mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <h1 className="text-center text-2xl font-bold">
+                {greeting}
+            </h1>
+        </div>
+    );
 }

@@ -11,8 +11,7 @@ export class TodoService {
       data: {
         title: createTodoDto.title,
         description: createTodoDto.description,
-        isDone: createTodoDto.isDone,
-        isInPorgress: createTodoDto.isInProgress
+        isActive: createTodoDto.isActive,
       }
     })
   }
@@ -36,8 +35,7 @@ export class TodoService {
       data:{
         title: updateTodoDto.title,
         description: updateTodoDto.description,
-        isDone: updateTodoDto.isDone,
-        isInPorgress: updateTodoDto.isInProgress
+        isActive: updateTodoDto.isActive
       }
     })
   }

@@ -2,19 +2,20 @@ import { useCallback, useEffect, useState } from 'react';
 import { AddItemForm } from './AddNewItemForm';
 import { ItemDisplay } from './ItemDisplay';
 
+// Changed to default export
 export function TodoListCard() {
     const [items, setItems] = useState(null);
 
     useEffect(() => {
-        fetch('https://3000-ghabianis-workshopnestj-3o8p78q8s8f.ws-eu116.gitpod.io/api/todo')
+        fetch('https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo')
             .then((r) => r.json())
             .then((response) => {
-                console.log('data:', response); // Log the correct response
-                setItems(response);  // Directly set the array from the response
+                console.log('data:', response);
+                setItems(response);
             })
             .catch((error) => {
                 console.error('Error fetching items:', error);
-                setItems([]);  // Optionally set an empty array if there's an error
+                setItems([]);
             });
     }, []);
 
@@ -54,7 +55,7 @@ export function TodoListCard() {
             {items.map((item) => (
                 <ItemDisplay
                     key={item.id}
-                    item={{ ...item, id: String(item.id) }}  // Convert id to string here
+                    item={{ ...item, id: String(item.id) }}
                     onItemUpdate={onItemUpdate}
                     onItemRemoval={onItemRemoval}
                 />
