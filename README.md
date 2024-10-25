@@ -61,4 +61,4 @@ sudo chmod 777 ./start.sh
 
 
 Feel free to modify any sections or examples as per your specific implementation details or additional requirements!
-Copeyright @ghabianis 
+Copyright @ghabianis 
