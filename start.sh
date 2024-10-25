@@ -4,6 +4,6 @@ npm i
 cd ..
 cd server
 npm i
-cp .env.example ./server/.env
 cd ..
+cp .env.example ./server/.env
 docker compose up --build -d
