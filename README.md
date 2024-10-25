@@ -27,7 +27,7 @@ We will develop a simple task management application where users can create, vie
   id: number,
   title: string,
   description: string,
-  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'
+  isActive: true
 }
 ```
 
@@ -43,7 +43,7 @@ model Task {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  status      String
+  isActive    String
 }
 
 ```
