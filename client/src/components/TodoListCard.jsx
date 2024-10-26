@@ -7,7 +7,7 @@ export function TodoListCard() {
     const [items, setItems] = useState(null);
 
     useEffect(() => {
-        fetch('https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo')
+        fetch(`${import.meta.env.VITE_SERVER_URL}/api/todo`)
             .then((r) => r.json())
             .then((response) => {
                 console.log('data:', response);

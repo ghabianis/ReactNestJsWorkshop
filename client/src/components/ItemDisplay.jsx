@@ -11,7 +11,7 @@ import './ItemDisplay.scss';
 
 export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     const toggleCompletion = () => {
-        fetch(`https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo/${item.id}`, {
+        fetch(`${import.meta.env.VITE_SERVER_URL}/api/todo/${item.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -29,7 +29,7 @@ export function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     };
 
     const removeItem = () => {
-        fetch(`https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo/${item.id}`, { method: 'DELETE' })
+        fetch(`${import.meta.env.VITE_SERVER_URL}/api/todo/${item.id}`, { method: 'DELETE' })
             .then(() => onItemRemoval(item))
             .catch((error) => console.error('Error removing item:', error));
     };

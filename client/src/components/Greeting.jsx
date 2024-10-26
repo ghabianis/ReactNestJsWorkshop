@@ -7,7 +7,8 @@ export function Greeting() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch('https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo/greeting')
+        console.log('vite',import.meta.env.VITE_SERVER_URL)
+        fetch(`${import.meta.env.VITE_SERVER_URL}/api/todo/greeting`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Failed to fetch greeting');

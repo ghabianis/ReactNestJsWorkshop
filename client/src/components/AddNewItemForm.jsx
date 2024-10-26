@@ -27,7 +27,7 @@ export function AddItemForm({ onNewItem }) {
             isActive: Boolean(isActive) // Ensure it's converted to boolean
         };
 
-        fetch('https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo/create', {
+        fetch(`${import.meta.env.VITE_SERVER_URL}/api/todo/create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newItemData),
@@ -62,7 +62,7 @@ export function AddItemForm({ onNewItem }) {
             isActive: Boolean(newStatus.isActive) // Ensure boolean conversion
         };
 
-        fetch(`https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo/${id}`, {
+        fetch(`${import.meta.env.VITE_SERVER_URL}/api/todo/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedTaskData),
@@ -99,7 +99,7 @@ export function AddItemForm({ onNewItem }) {
             isActive: Boolean(editingTask.isActive) // Ensure boolean conversion
         };
 
-        fetch(`https://3000-ghabianis-reactnestjswo-f6pu9hax5fl.ws-eu116.gitpod.io/api/todo/${editingTask.id}`, {
+        fetch(`${import.meta.env.VITE_SERVER_URL}/api/todo/${editingTask.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedTaskData),
