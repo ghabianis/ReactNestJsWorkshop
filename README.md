@@ -48,6 +48,12 @@ model Task {
 
 ```
 
+## Setup the react App With Vite:
+
+```
+npm create vite@latest
+
+```
 
 
 <hr> Let's hack the world 🐱‍💻
@@ -59,6 +65,24 @@ sudo chmod 777 ./start.sh
 
 ```
 
+
+## start :
+ ```
+  # nest project creation
+  npm init
+  npm i @nestjs/cli  \\ nest cli
+  nest new project-name
+  nest g resource
+
+
+  # prisma initialization
+  npm i prisma
+  npx prisma init
+
+  #react vite
+  npm create vite@latest
+  
+ ```
 
 Feel free to modify any sections or examples as per your specific implementation details or additional requirements!
 Copyright @ghabianis 
