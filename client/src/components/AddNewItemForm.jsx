@@ -143,7 +143,7 @@ export function AddItemForm({ onNewItem }) {
                     />
                 </InputGroup>
                 <Button
-                    className="mb-3"
+                    className="mb-5 col-12"
                     type="submit"
                     variant="success"
                     disabled={!title.length || submitting}

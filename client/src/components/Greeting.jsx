@@ -34,7 +34,7 @@ export function Greeting() {
 
     return (
         <div className="w-full max-w-4xl mx-auto mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50">
-            <h1 className="text-center text-2xl font-bold">
+            <h1 className="text-center text-2xl font-bold text-black">
                 {greeting}
             </h1>
         </div>

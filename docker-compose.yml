@@ -1,4 +1,3 @@
-version: '3.5'
 
 services:
   proxy:
@@ -13,8 +12,8 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
@@ -26,12 +25,12 @@ services:
       context: ./server
       dockerfile: docker/Dockerfile 
     environment: 
-      - DATABASE_DB=dbpfa
-      - DATABASE_USER=root
-      - DATABASE_PASSWORD=root
-      - DATABASE_HOST=db
-      - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - DATABASE_DB=${DATABASE_DB}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${DATABASE_URL}
     ports: 
       - '3000:3000' 
     depends_on: 
@@ -45,8 +44,8 @@ services:
     restart: always
     container_name: nest-pgadmin4
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - '5050:80'
     depends_on:
@@ -70,7 +69,7 @@ services:
     volumes:
       - ./server/prisma:/app/prisma
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - DATABASE_URL=${DATABASE_URL}
     depends_on:
       - db
 
@@ -91,5 +90,21 @@ services:
     volumes:
       - ./client:/usr/local/app
 
+  client2:
+    container_name: client2
+    build:
+      context: ./vite-project
+      dockerfile: docker/Dockerfile
+    ports:
+      - "5333:5333"
+    develop:
+      watch:
+        - path: ./vite-project/src
+          action: sync
+          target: /usr/local/app2/src
+        - path: ./vite-project/package.json
+          action: rebuild
+    volumes:
+      - ./vite-project:/usr/local/app2
 volumes:
   postgres:
