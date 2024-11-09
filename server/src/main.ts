@@ -18,6 +18,14 @@ async function bootstrap() {
     .setDescription('The workshop API')
     .setVersion('1.0')
     .addTag('workshop nestjs')
+    .addBearerAuth(
+      { 
+          type: 'http', 
+          scheme: 'bearer', 
+          bearerFormat: 'JWT' 
+      },
+      'access_token',
+  )
     .build();
   
   const documentFactory = () => SwaggerModule.createDocument(app, config);

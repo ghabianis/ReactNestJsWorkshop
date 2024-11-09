@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { PrismaService } from 'src/databaseConfig/prisma/prisma.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -11,6 +11,7 @@ export class TodoController {
 
   @Post('create')
   @ApiBody({ type: CreateTodoDto }) 
+  @ApiBearerAuth('access_token')
   async create(@Body() createTodoDto: CreateTodoDto) {
    try {
     const response = await this.todoService.create(createTodoDto)

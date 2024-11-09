@@ -89,22 +89,5 @@ services:
           action: rebuild
     volumes:
       - ./client:/usr/local/app
-
-  client2:
-    container_name: client2
-    build:
-      context: ./vite-project
-      dockerfile: docker/Dockerfile
-    ports:
-      - "5333:5333"
-    develop:
-      watch:
-        - path: ./vite-project/src
-          action: sync
-          target: /usr/local/app2/src
-        - path: ./vite-project/package.json
-          action: rebuild
-    volumes:
-      - ./vite-project:/usr/local/app2
 volumes:
   postgres:
