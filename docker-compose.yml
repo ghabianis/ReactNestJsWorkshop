@@ -73,21 +73,5 @@ services:
     depends_on:
       - db
 
-  client:
-    container_name: client
-    build:
-      context: ./client
-      dockerfile: docker/Dockerfile
-    ports:
-      - "5173:5173"
-    develop:
-      watch:
-        - path: ./client/src
-          action: sync
-          target: /usr/local/app/src
-        - path: ./client/package.json
-          action: rebuild
-    volumes:
-      - ./client:/usr/local/app
 volumes:
   postgres:

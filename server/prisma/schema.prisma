@@ -16,6 +16,8 @@ model Todo {
   title       String
   description String
   isActive    Boolean? @default(true)
+  userId      Int      
+  users       Users    @relation(fields: [userId], references: [id])
 }
 
 model Users {
@@ -24,7 +26,8 @@ model Users {
   updatedAt DateTime @updatedAt
   deletedAt String?
   password  String
-  email     String @unique
+  email     String   @unique
   firstName String?
   lastName  String?
+  todos     Todo[]
 }

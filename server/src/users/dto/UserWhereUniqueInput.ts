@@ -6,6 +6,5 @@ export class UserWhereUniqueInput {
     @IsNotEmpty()
     @IsString()
     email
-  
 }
 

@@ -9,6 +9,7 @@ export class TodoService {
   async create(createTodoDto: CreateTodoDto) {
     return await this.prismaService.todo.create({
       data: {
+        userId: createTodoDto.userId,
         title: createTodoDto.title,
         description: createTodoDto.description,
         isActive: createTodoDto.isActive,
@@ -17,15 +18,27 @@ export class TodoService {
   }
 
   async findAll() {
-    const response = await this.prismaService.todo.findMany();
+    const response = await this.prismaService.todo.findMany(
+      {
+        select:{
+          users: true,
+          title: true,
+          description: true,
+          isActive: true,
+          createdAt : true,
+          updatedAt : true,
+          deletedAt : true
+        }
+      }
+    );
     return response;
   }
 
   async findOne(id: number) {
     return await this.prismaService.todo.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     })
   }
 

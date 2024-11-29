@@ -70,8 +70,8 @@ sudo chmod 777 ./start.sh
  ```
   # nest project creation
   npm init
-  npm i @nestjs/cli  \\ nest cli
-  nest new project-name
+  npm i -g @nestjs/cli  \\ nest cli
+  nest new server
   nest g resource
 
 

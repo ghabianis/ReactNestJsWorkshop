@@ -2,12 +2,12 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class SingInCreateInput {
-    @ApiProperty({ description: 'The title of the Todo', example: 'Buy groceries' })
+    @ApiProperty({ description: 'The user email', example: 'anisghabi8@gmail.com' })
     @IsNotEmpty()
     @IsString()
     email: string;
   
-    @ApiPropertyOptional({ description: 'A short description of the Todo', example: 'Buy milk, eggs, and bread' })
+    @ApiPropertyOptional({ description: 'The user password', example: 'example password' })
     @IsNotEmpty()
     @IsString()
     password?: string;

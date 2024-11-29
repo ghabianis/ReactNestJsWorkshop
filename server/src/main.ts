@@ -11,7 +11,6 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   });
-  
 
   const config = new DocumentBuilder()
     .setTitle('workshop')
@@ -19,15 +18,16 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('workshop nestjs')
     .addBearerAuth(
-      { 
-          type: 'http', 
-          scheme: 'bearer', 
-          bearerFormat: 'JWT' 
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        in: 'Header'
       },
-      'access_token',
-  )
+      'access-token',
+    )
     .build();
-  
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 

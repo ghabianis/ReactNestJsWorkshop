@@ -1,8 +1,9 @@
 
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
+import { jwtConstants } from './constants';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { email: user.email, sub: user.userId };
+    const payload = { email: user.email, sub: user.id };
 
     const access_token = await this.jwtService.signAsync(payload);
 
@@ -34,32 +35,45 @@ export class AuthService {
 
 
   async signup(data: any) {
-    if (!data || !data.email) {
-      console.log('Bad data sent');
-      throw new Error('Invalid signup data');
-    }
+    try {
 
-    console.log('Signup controller:', data.email);
 
-    const user = await this.usersService.findOne(data.email);
-    if (!user) {
-      console.log('User not found, proceeding to create one');
-
-      const createdUser = await this.usersService.create(data);
-      if (createdUser) {
-        const payload = { email: createdUser.email, sub: createdUser.userId };
-        const access_token = await this.jwtService.signAsync(payload);
-        return {
-          user: createdUser,
-          access_token,
-        };
-      } else {
-        throw new Error('User creation failed');
+      if (!data || !data.email) {
+        throw new Error('Invalid signup data');
       }
-    } else {
-      throw new Error('User email or password already exists!');
+
+      const user = await this.usersService.findOne(data.email);
+      if (!user) {
+        console.log('User not found, proceeding to create one');
+
+        const createdUser = await this.usersService.create(data);
+        if (createdUser) {
+          const payload = { email: createdUser.email, sub: createdUser.id };
+          const access_token = await this.jwtService.signAsync(payload);
+          return {
+            user: createdUser,
+            access_token,
+          };
+        } else {
+          throw new Error('User creation failed');
+        }
+      } else {
+        throw new BadRequestException('User email or password already exists!');
+      }
+    } catch (error) {
+      switch (error.status) {
+        case 400:
+          throw new BadRequestException(`Error: ${error.message}`)
+        case 500:
+          throw new InternalServerErrorException(`Internal server Error: ${error.message}`)
+      }
     }
   }
 
+  validateToken(token: string) {
+    return this.jwtService.verify(token, {
+      secret: jwtConstants.secret
+    });
+  }
 
 }
